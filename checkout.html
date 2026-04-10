@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout - Respira Mais</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --sage: #8aad99;
+      --sage-lt: #c4d9ce;
+      --mint: #d6ede4;
+      --sky: #b8d4e8;
+      --sky-deep: #5e8fa8;
+      --linen: #f4f0ea;
+      --stone: #3d4a42;
+      --ink: #1e2820;
+      --gold: #c9a96e;
+      --cream: #fdfaf5;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .header {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 2rem 0;
+      text-align: center;
+    }
+    .header h1 { font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .products { padding: 4rem 0; }
+    .products h2 { font-family: var(--font-display); font-size: 2rem; text-align: center; margin-bottom: 2rem; }
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .product-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,.1);
+      text-align: center;
+    }
+    .product-card h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; }
+    .product-card p { margin-bottom: 1.5rem; color: var(--stone); }
+    .product-price { font-size: 1.5rem; font-weight: 600; color: var(--gold); margin-bottom: 1rem; }
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+    .btn-primary { background: var(--sage); color: #fff; }
+    .btn-primary:hover { background: var(--stone); }
+    .cart { padding: 4rem 0; background: var(--linen); }
+    .cart h2 { font-family: var(--font-display); font-size: 2rem; text-align: center; margin-bottom: 2rem; }
+    .cart-items { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,.1); max-width: 600px; margin: 0 auto; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-total { font-size: 1.25rem; font-weight: 600; text-align: center; margin-top: 1rem; }
+    .checkout { padding: 4rem 0; }
+    .checkout h2 { font-family: var(--font-display); font-size: 2rem; text-align: center; margin-bottom: 2rem; }
+    .checkout-form { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,.1); }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+    .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    .form-row { display: flex; gap: 1rem; }
+    .form-row .form-group { flex: 1; }
+    .success { display: none; text-align: center; padding: 4rem 0; }
+    .success h2 { color: var(--sage); }
+    .back-btn { display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem; background: var(--stone); color: #fff; text-decoration: none; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1>Checkout - Respira Mais</h1>
+      <p>Escolha seus produtos e finalize sua compra</p>
+    </div>
+  </header>
+
+  <section class="products">
+    <div class="container">
+      <h2>Escolha seu Produto</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <h3>Frasco Nível 1</h3>
+          <p>Para estresse leve. Reduz tensão e melhora foco.</p>
+          <div class="product-price">R$ 89,90</div>
+          <button class="btn btn-primary" onclick="addToCart('Frasco Nível 1', 89.90)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <h3>Frasco Nível 3</h3>
+          <p>Para estresse intenso. Reconstrução profunda.</p>
+          <div class="product-price">R$ 149,90</div>
+          <button class="btn btn-primary" onclick="addToCart('Frasco Nível 3', 149.90)">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cart">
+    <div class="container">
+      <h2>Seu Carrinho</h2>
+      <div class="cart-items" id="cart-items">
+        <p id="empty-cart">Carrinho vazio</p>
+      </div>
+      <div class="cart-total" id="cart-total">Total: R$ 0,00</div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <button class="btn btn-primary" onclick="proceedToCheckout()">Ir para Checkout</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="checkout" id="checkout-section" style="display: none;">
+    <div class="container">
+      <h2>Finalizar Compra</h2>
+      <form class="checkout-form" id="checkout-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first-name">Nome</label>
+            <input type="text" id="first-name" required>
+          </div>
+          <div class="form-group">
+            <label for="last-name">Sobrenome</label>
+            <input type="text" id="last-name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+          <label for="address">Endereço</label>
+          <input type="text" id="address" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">Cidade</label>
+            <input type="text" id="city" required>
+          </div>
+          <div class="form-group">
+            <label for="zip">CEP</label>
+            <input type="text" id="zip" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="card-number">Número do Cartão</label>
+          <input type="text" id="card-number" placeholder="1234 5678 9012 3456" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expiry">Validade</label>
+            <input type="text" id="expiry" placeholder="MM/AA" required>
+          </div>
+          <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Finalizar Pedido</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="success" id="success-section">
+    <div class="container">
+      <h2>Compra Realizada com Sucesso!</h2>
+      <p>Obrigado por escolher Respira Mais. Seu pedido foi processado.</p>
+      <a href="index.html" class="back-btn">Voltar ao Início</a>
+    </div>
+  </section>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(product, price) {
+      const existing = cart.find(item => item.product === product);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ product, price, quantity: 1 });
+      }
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      const emptyCart = document.getElementById('empty-cart');
+      const cartTotal = document.getElementById('cart-total');
+      cartItems.innerHTML = '';
+      total = 0;
+
+      if (cart.length === 0) {
+        cartItems.appendChild(emptyCart);
+        emptyCart.style.display = 'block';
+      } else {
+        emptyCart.style.display = 'none';
+        cart.forEach((item, index) => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'cart-item';
+          itemDiv.innerHTML = `
+            <span>${item.product} (x${item.quantity})</span>
+            <span>R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</span>
+            <button onclick="removeFromCart(${index})">Remover</button>
+          `;
+          cartItems.appendChild(itemDiv);
+          total += item.price * item.quantity;
+        });
+      }
+      cartTotal.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+    function proceedToCheckout() {
+      if (cart.length === 0) {
+        alert('Adicione produtos ao carrinho primeiro.');
+        return;
+      }
+      document.querySelector('.cart').style.display = 'none';
+      document.querySelector('.products').style.display = 'none';
+      document.getElementById('checkout-section').style.display = 'block';
+    }
+
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Simulação de processamento
+      document.getElementById('checkout-section').style.display = 'none';
+      document.getElementById('success-section').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
