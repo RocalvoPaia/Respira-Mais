@@ -3,22 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name = "description" content="Respira Mais é uma capsula anti-estresse que te ajuda a desestressar de nossa vida.">
-  <meta name="keywords" content="anti estresse, ansiedade, capsula natural, capsula anti-estresse, capsula de relaxamento">
-
-  <meta property="og:title" content="Respira Mais Cápsulas Anti Estresse">
-  <meta property="og:description" content="Reduza o estresse e viva melhor com Respira+">
-  <meta property="og:image" content="https://seusite.github.io/img.jpg">
-  <meta property="og:type" content="website">
-
   <title>Respira Mais — Sua Cápsula Antiestresse</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* =============================================
@@ -328,7 +318,7 @@
     .cta-label { color: var(--sage-lt); }
     .cta-title { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 300; margin-bottom: 1.2rem; line-height: 1.05; position: relative; z-index: 1; }
     .cta-title em { font-style: italic; color: var(--sage); }
-    .cta-sub { font-size: .975rem; color: rgba(255,255,255,.6); max-width: 480px; margin: 0 auto 2.8rem; font-weight: 300; position: relative; z-index: 1; font-family: 'Playfair Display', serif;}
+    .cta-sub { font-size: .975rem; color: rgba(255,255,255,.6); max-width: 480px; margin: 0 auto 2.8rem; font-weight: 300; position: relative; z-index: 1; }
     .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
     .price-tag { display: inline-block; font-family: var(--font-display); font-size: 1.1rem; color: rgba(255,255,255,.55); margin-top: 1.8rem; position: relative; z-index: 1; }
     .price-tag strong { font-size: 1.5rem; color: var(--gold); font-weight: 400; }
@@ -355,175 +345,9 @@
     @media (max-width: 600px) {
       .niveis-grid { grid-template-columns: 1fr; }
     }
-
-    /* =============================================
-       NOTIFICAÇÕES
-    ============================================= */
-    #notification-container {
-      position: fixed;
-      bottom: 1.25rem;
-      right: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: .9rem;
-      z-index: 1200;
-      pointer-events: none;
-    }
-    .notification-toast {
-      min-width: 280px;
-      max-width: 340px;
-      padding: 1rem 1.2rem;
-      border-radius: 18px;
-      background: rgba(30, 40, 32, .96);
-      color: #fff;
-      box-shadow: 0 24px 60px rgba(0,0,0,.2);
-      font-size: .92rem;
-      line-height: 1.4;
-      border: 1px solid rgba(255,255,255,.08);
-      opacity: 0;
-      transform: translateY(14px);
-      animation: toastIn .45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      pointer-events: auto;
-    }
-    .notification-toast strong {
-      color: var(--gold);
-      font-weight: 600;
-    }
-    .notification-toast span {
-      display: block;
-      margin-top: .3rem;
-      color: rgba(255,255,255,.7);
-      font-size: .82rem;
-    }
-
-    /* =============================================
-       DESCONTO DE SAÍDA
-    ============================================= */
-    .discount-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(16, 20, 18, .72);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .25s ease;
-      z-index: 1300;
-    }
-    .discount-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .discount-modal {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .25s ease;
-      z-index: 1305;
-    }
-    .discount-modal.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .discount-card {
-      width: min(540px, 100%);
-      background: #fff;
-      border-radius: 28px;
-      box-shadow: 0 32px 120px rgba(0,0,0,.18);
-      padding: 2rem 2.2rem;
-      position: relative;
-      text-align: center;
-    }
-    .discount-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      width: 38px;
-      height: 38px;
-      border: none;
-      border-radius: 50%;
-      background: rgba(30,40,32,.08);
-      color: var(--ink);
-      font-size: 1.4rem;
-      cursor: pointer;
-      line-height: 1;
-    }
-    .discount-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: .55rem 1rem;
-      border-radius: 999px;
-      background: var(--mint);
-      color: var(--ink);
-      font-size: .82rem;
-      font-weight: 600;
-      margin-bottom: 1.1rem;
-    }
-    .discount-title {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 2.7vw, 2.6rem);
-      font-weight: 400;
-      margin-bottom: 1rem;
-      color: var(--ink);
-    }
-    .discount-text {
-      font-size: 1rem;
-      color: var(--stone);
-      line-height: 1.7;
-      margin-bottom: 1.1rem;
-    }
-    .discount-price-text {
-      font-size: 1rem;
-      color: var(--ink);
-      font-weight: 500;
-      margin-bottom: 1.8rem;
-    }
-    .discount-price-text strong {
-      color: var(--gold);
-      font-size: 1.15rem;
-    }
-    .discount-original-price {
-      color: rgba(30,40,32,.6);
-      text-decoration: line-through;
-    }
-    .discount-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    @media (max-width: 640px) {
-      .discount-card { padding: 1.6rem 1.4rem; }
-      .discount-actions { flex-direction: column; }
-    }
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateY(20px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
   </style>
 </head>
 <body>
-  <div id="notification-container" aria-live="polite" aria-atomic="true"></div>
-  <div id="discount-overlay" class="discount-overlay"></div>
-  <div id="discount-modal" class="discount-modal" aria-hidden="true">
-    <div class="discount-card">
-      <button id="discount-close" class="discount-close" aria-label="Fechar desconto">×</button>
-      <div class="discount-badge">Oferta especial</div>
-      <h2 class="discount-title">30% OFF na primeira compra</h2>
-      <p class="discount-text">Quase desistiu? Aqui está um desconto exclusivo de <strong>Respira Mais</strong> para você aproveitar agora mesmo.</p>
-      <p class="discount-price-text">Primeiro pacote por <strong id="discounted-price">R$ 62,93 / mês</strong> em vez de <span class="discount-original-price">R$ 89,90 / mês</span>.</p>
-      <div class="discount-actions">
-        <button class="btn btn-gold" onclick="location.href='#cta-final'">
-          Aplicar desconto e comprar
-        </button>
-        <button id="discount-close-btn" class="btn btn-outline">Fechar</button>
-      </div>
-    </div>
-  </div>
 
   <!-- NAV -->
   <nav id="nav">
@@ -952,7 +776,7 @@
           <a href="#" class="btn btn-gold">Comprar Respira Mais →</a>
           <a href="#quiz" class="btn btn-outline" style="border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.8)">Fazer o quiz primeiro</a>
         </div>
-        <div class="price-tag">A partir de <strong id="product-price">R$ 89,90 / mês</strong> · Frete grátis para todo Brasil</div>
+        <div class="price-tag">A partir de <strong>R$ 89,90 / mês</strong> · Frete grátis para todo Brasil</div>
       </div>
       <div class="guarantees reveal">
         <div class="guarantee-item"><span>🛡️</span> Garantia 30 dias</div>
@@ -1083,82 +907,6 @@
       circle.classList.remove('r-nivel-1','r-nivel-2','r-nivel-3');
       quizQs.style.display = 'block';
     });
-
-    /* === NOTIFICAÇÕES DE COMPRA === */
-    const notificationContainer = document.getElementById('notification-container');
-    const notificationMessages = [
-      'Júlia comprou 1 frasco de <strong>Respira Mais</strong> de nível 2',
-      'Gabriel acabou de adquirir 2 frascos de <strong>Respira Mais</strong> nível 1',
-      'Marina comprou 1 frasco de <strong>Respira Mais</strong> nível 3',
-      'Lucas garantiu 1 frasco de <strong>Respira Mais</strong> de nível 2',
-      'Jhonata garantiu 67 frascos de <strong>Respira Mais</strong> de nível 3',
-      'Ohara acabou de adquirir 5 frascos de <strong>Respira Mais</strong> nível 1',
-    ];
-    let notificationIndex = 0;
-
-    function showPurchaseNotification(message) {
-      const toast = document.createElement('div');
-      toast.className = 'notification-toast';
-      toast.innerHTML = message;
-      notificationContainer.appendChild(toast);
-      setTimeout(() => toast.style.opacity = '0', 5000);
-      setTimeout(() => toast.remove(), 5700);
-    }
-
-    function startPurchaseNotifications() {
-      showPurchaseNotification(notificationMessages[notificationIndex]);
-      notificationIndex = (notificationIndex + 1) % notificationMessages.length;
-      window.purchaseNotificationInterval = setInterval(() => {
-        showPurchaseNotification(notificationMessages[notificationIndex]);
-        notificationIndex = (notificationIndex + 1) % notificationMessages.length;
-      }, Math.floor(Math.random() * (15000 - 4000) + 4000));
-    }
-
-    setTimeout(startPurchaseNotifications, 120000);
-
-    /* === DESCONTO DE SAÍDA === */
-    const discountModal = document.getElementById('discount-modal');
-    const discountOverlay = document.getElementById('discount-overlay');
-    const productPriceEl = document.getElementById('product-price');
-    const originalPriceValue = 89.90;
-    const discountedPriceValue = (originalPriceValue * 0.7).toFixed(2).replace('.', ',');
-    let reachedBottomOnce = false;
-    let discountShown = false;
-    let lastScrollY = window.scrollY;
-
-    function openDiscountModal() {
-      if (!discountModal || discountModal.classList.contains('open')) return;
-      discountModal.classList.add('open');
-      discountOverlay.classList.add('open');
-      if (productPriceEl) {
-        productPriceEl.textContent = `R$ ${discountedPriceValue} / mês`;
-      }
-    }
-
-    function closeDiscountModal() {
-      if (!discountModal) return;
-      discountModal.classList.remove('open');
-      discountOverlay.classList.remove('open');
-    }
-
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      const atBottom = window.innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
-      if (atBottom) {
-        reachedBottomOnce = true;
-      }
-      if (reachedBottomOnce && !discountShown && scrollY < lastScrollY && !atBottom && scrollY < document.documentElement.scrollHeight - window.innerHeight - 80) {
-        openDiscountModal();
-        discountShown = true;
-      }
-      lastScrollY = scrollY;
-    });
-
-    document.getElementById('discount-close-btn').addEventListener('click', closeDiscountModal);
-    document.getElementById('discount-close').addEventListener('click', closeDiscountModal);
-    document.getElementById('discount-close-btn').addEventListener('click', closeDiscountModal);
-    document.getElementById('btn btn-gold').addEventListener('click', closeDiscountModal);
-    discountOverlay.addEventListener('click', closeDiscountModal);
 
     /* === PARALLAX ORBS === */
     document.addEventListener('mousemove', e => {
