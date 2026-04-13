@@ -8,7 +8,7 @@
 
   <meta property="og:title" content="Respira Mais Cápsulas Anti Estresse">
   <meta property="og:description" content="Reduza o estresse e viva melhor com Respira+">
-  <meta property="og:image" content="https://seusite.github.io/img.jpg">
+  <meta property="og:image" src="assets/produtos/frasco-hero.svg">
   <meta property="og:type" content="website">
 
   <title>Respira Mais — Sua Cápsula Antiestresse</title>
@@ -517,7 +517,7 @@
       <p class="discount-text">Quase desistiu? Aqui está um desconto exclusivo de <strong>Respira Mais</strong> para você aproveitar agora mesmo.</p>
       <p class="discount-price-text">Primeiro pacote por <strong id="discounted-price">R$ 62,93 / mês</strong> em vez de <span class="discount-original-price">R$ 89,90 / mês</span>.</p>
       <div class="discount-actions">
-        <button class="btn btn-gold" onclick="location.href='#cta-final'">
+        <button id="apply-discount-btn" class="btn btn-gold" type="button">
           Aplicar desconto e comprar
         </button>
         <button id="discount-close-btn" class="btn btn-outline">Fechar</button>
@@ -970,28 +970,43 @@
   </footer>
 
   <script>
+
     /* === NAV SCROLL === */
     const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+    if (nav) {
+      window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+      }, { passive: true });
+    }
 
     /* === SCROLL REVEAL === */
-    const revEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
-    new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.12 }).observe && revEls.forEach(el => {
-      new IntersectionObserver(entries => { if(entries[0].isIntersecting) entries[0].target.classList.add('visible'); }, { threshold: 0.12 }).observe(el);
-    });
+    const revEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      revEls.forEach(el => revealObserver.observe(el));
+    } else {
+      revEls.forEach(el => el.classList.add('visible'));
+    }
 
     /* === AJUDA TABS === */
     const tabs = document.querySelectorAll('.ajuda-tab');
     const panels = document.querySelectorAll('.ajuda-panel');
 
-    // Circle animation helper
     function animateCircle(panelIdx) {
       const panel = document.getElementById('ajuda-' + panelIdx);
+      if (!panel) return;
       const fill = panel.querySelector('.cp-fill');
-      const pctEl = panel.querySelector('.cp-pct');
+      if (!fill) return;
       const pcts = [72, 86, 94];
-      const pct = pcts[panelIdx] / 100;
-      const circ = 2 * Math.PI * 54; // r=54 => 339.3
+      const pct = (pcts[panelIdx] || 0) / 100;
+      const circ = 2 * Math.PI * 54;
       fill.style.strokeDashoffset = circ - (circ * pct);
     }
 
@@ -1000,19 +1015,23 @@
         tabs.forEach(t => t.classList.remove('active'));
         panels.forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
-        panels[i].classList.add('active');
+        if (panels[i]) panels[i].classList.add('active');
         setTimeout(() => animateCircle(i), 80);
       });
     });
 
-    // Animate first circle on section enter
     let didCircle = false;
-    new IntersectionObserver(entries => {
-      if(entries[0].isIntersecting && !didCircle) { didCircle = true; setTimeout(() => animateCircle(0), 300); }
-    }, { threshold: 0.3 }).observe(document.getElementById('como-ajuda'));
+    const ajudaSection = document.getElementById('como-ajuda');
+    if (ajudaSection && 'IntersectionObserver' in window) {
+      new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && !didCircle) {
+          didCircle = true;
+          setTimeout(() => animateCircle(0), 300);
+        }
+      }, { threshold: 0.3 }).observe(ajudaSection);
+    }
 
     /* === QUIZ === */
-    let currentQ = 0;
     const scores = new Array(8).fill(0);
     const steps = document.querySelectorAll('.quiz-step');
     const progressFill = document.getElementById('quiz-progress');
@@ -1022,67 +1041,85 @@
     steps.forEach((step, si) => {
       const opts = step.querySelectorAll('.quiz-option');
       const nextBtn = step.querySelector('.btn-next');
+      if (!nextBtn) return;
+
       opts.forEach(opt => {
         opt.addEventListener('click', () => {
           opts.forEach(o => o.classList.remove('selected'));
           opt.classList.add('selected');
-          scores[si] = parseInt(opt.dataset.score);
+          scores[si] = Number(opt.dataset.score || 0);
           nextBtn.disabled = false;
         });
       });
+
       nextBtn.addEventListener('click', () => {
-        if(nextBtn.disabled) return;
-        if(si < 7) {
+        if (nextBtn.disabled) return;
+
+        if (si < steps.length - 1) {
           step.classList.remove('active');
           steps[si + 1].classList.add('active');
-          currentQ = si + 1;
-          progressFill.style.width = ((si + 1) / 8 * 100) + '%';
+          if (progressFill) progressFill.style.width = ((si + 1) / steps.length * 100) + '%';
         } else {
-          progressFill.style.width = '100%';
-          showResult(scores.reduce((a,b)=>a+b,0));
+          if (progressFill) progressFill.style.width = '100%';
+          showResult(scores.reduce((a, b) => a + b, 0));
         }
       });
     });
 
     function showResult(total) {
-      quizQs.style.display = 'none';
-      quizRes.classList.add('active');
+      if (quizQs) quizQs.style.display = 'none';
+      if (quizRes) quizRes.classList.add('active');
+
       const circle = document.getElementById('result-circle');
       const label  = document.getElementById('result-label');
       const title  = document.getElementById('result-title');
       const desc   = document.getElementById('result-desc');
-      // 8 Qs × max 4 pts = 32; min = 8
-      // Level 1: 8-16 | Level 2: 17-24 | Level 3: 25-32
-      if(total <= 16) {
-        circle.classList.add('r-nivel-1'); circle.textContent = '1';
+      if (!circle || !label || !title || !desc) return;
+
+      circle.classList.remove('r-nivel-1', 'r-nivel-2', 'r-nivel-3');
+
+      if (total <= 16) {
+        circle.classList.add('r-nivel-1');
+        circle.textContent = '1';
         label.textContent = '🌱 Nível 1 — Estresse Leve';
         title.textContent = 'Você está bem encaminhado';
-        desc.textContent = 'Seu estresse está em um nível manejável. Com Respira Mais, você pode manter esse equilíbrio e ainda turbinar seu foco, energia e qualidade de sono — sem abrir mão do seu ritmo de vida.';
-      } else if(total <= 24) {
-        circle.classList.add('r-nivel-2'); circle.textContent = '2';
+        desc.textContent = 'Seu estresse está em um nível manejável. Com Respira Mais, você pode manter esse equilíbrio e ainda turbinar seu foco, energia e qualidade de sono.';
+      } else if (total <= 24) {
+        circle.classList.add('r-nivel-2');
+        circle.textContent = '2';
         label.textContent = '🌊 Nível 2 — Estresse Moderado';
         title.textContent = 'Hora de se cuidar com atenção';
-        desc.textContent = 'Seu corpo e mente estão dando sinais claros. O estresse moderado pode virar crônico se não tratado. O protocolo de Nível 2 do Respira Mais pode fazer uma diferença significativa em poucas semanas.';
+        desc.textContent = 'Seu corpo e mente estão dando sinais claros. O protocolo de Nível 2 do Respira Mais pode apoiar sua rotina e ajudar no equilíbrio diário.';
       } else {
-        circle.classList.add('r-nivel-3'); circle.textContent = '3';
+        circle.classList.add('r-nivel-3');
+        circle.textContent = '3';
         label.textContent = '🔥 Nível 3 — Estresse Intenso';
         title.textContent = 'Você precisa de cuidado agora';
-        desc.textContent = 'Seus resultados indicam estresse crônico elevado. É importante agir já. Respira Mais com o protocolo de Nível 3 — aliado a suporte profissional — pode te ajudar a reconstruir seu equilíbrio. Você merece isso.';
+        desc.textContent = 'Seus resultados indicam estresse elevado. É importante agir já e buscar também suporte profissional. O protocolo de Nível 3 pode ser um apoio na sua rotina.';
       }
     }
 
-    document.getElementById('quiz-restart').addEventListener('click', () => {
-      scores.fill(0); currentQ = 0;
-      steps.forEach(s => s.classList.remove('active'));
-      steps[0].classList.add('active');
-      document.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
-      document.querySelectorAll('.btn-next').forEach(b => b.disabled = true);
-      progressFill.style.width = '0%';
-      quizRes.classList.remove('active');
-      const circle = document.getElementById('result-circle');
-      circle.classList.remove('r-nivel-1','r-nivel-2','r-nivel-3');
-      quizQs.style.display = 'block';
-    });
+    const quizRestart = document.getElementById('quiz-restart');
+    if (quizRestart) {
+      quizRestart.addEventListener('click', () => {
+        scores.fill(0);
+        steps.forEach(s => s.classList.remove('active'));
+        if (steps[0]) steps[0].classList.add('active');
+        document.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+        document.querySelectorAll('.btn-next').forEach(b => b.disabled = true);
+        if (progressFill) progressFill.style.width = '0%';
+        if (quizRes) quizRes.classList.remove('active');
+        const circle = document.getElementById('result-circle');
+        const label  = document.getElementById('result-label');
+        const title  = document.getElementById('result-title');
+        const desc   = document.getElementById('result-desc');
+        if (circle) circle.classList.remove('r-nivel-1', 'r-nivel-2', 'r-nivel-3');
+        if (label) label.textContent = '';
+        if (title) title.textContent = '';
+        if (desc) desc.textContent = '';
+        if (quizQs) quizQs.style.display = 'block';
+      });
+    }
 
     /* === NOTIFICAÇÕES DE COMPRA === */
     const notificationContainer = document.getElementById('notification-container');
@@ -1092,17 +1129,18 @@
       'Marina comprou 1 frasco de <strong>Respira Mais</strong> nível 3',
       'Lucas garantiu 1 frasco de <strong>Respira Mais</strong> de nível 2',
       'Jhonata garantiu 67 frascos de <strong>Respira Mais</strong> de nível 3',
-      'Ohara acabou de adquirir 5 frascos de <strong>Respira Mais</strong> nível 1',
+      'Ohara acabou de adquirir 5 frascos de <strong>Respira Mais</strong> nível 1'
     ];
     let notificationIndex = 0;
 
     function showPurchaseNotification(message) {
+      if (!notificationContainer) return;
       const toast = document.createElement('div');
       toast.className = 'notification-toast';
       toast.innerHTML = message;
       notificationContainer.appendChild(toast);
-      setTimeout(() => toast.style.opacity = '0', 5000);
-      setTimeout(() => toast.remove(), 5700);
+      setTimeout(() => { toast.style.opacity = '0'; }, 5000);
+      setTimeout(() => { toast.remove(); }, 5700);
     }
 
     function startPurchaseNotifications() {
@@ -1129,47 +1167,61 @@
     function openDiscountModal() {
       if (!discountModal || discountModal.classList.contains('open')) return;
       discountModal.classList.add('open');
-      discountOverlay.classList.add('open');
+      discountOverlay?.classList.add('open');
       if (productPriceEl) {
         productPriceEl.textContent = `R$ ${discountedPriceValue} / mês`;
       }
     }
 
     function closeDiscountModal() {
-      if (!discountModal) return;
-      discountModal.classList.remove('open');
-      discountOverlay.classList.remove('open');
+      discountModal?.classList.remove('open');
+      discountOverlay?.classList.remove('open');
     }
 
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const atBottom = window.innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
-      if (atBottom) {
-        reachedBottomOnce = true;
-      }
-      if (reachedBottomOnce && !discountShown && scrollY < lastScrollY && !atBottom && scrollY < document.documentElement.scrollHeight - window.innerHeight - 80) {
+      if (atBottom) reachedBottomOnce = true;
+
+      if (reachedBottomOnce && !discountShown && scrollY < lastScrollY && !atBottom && scrollY < document.documentElement.scrollHeight - window.innerHeight - 80 && localStorage.getItem('respira_discount_percent') !== '30') {
         openDiscountModal();
         discountShown = true;
       }
       lastScrollY = scrollY;
-    });
+    }, { passive: true });
 
-    document.getElementById('discount-close-btn').addEventListener('click', closeDiscountModal);
-    document.getElementById('discount-close').addEventListener('click', closeDiscountModal);
-    document.getElementById('discount-close-btn').addEventListener('click', closeDiscountModal);
-    document.getElementById('btn btn-gold').addEventListener('click', closeDiscountModal);
-    discountOverlay.addEventListener('click', closeDiscountModal);
+    const discountCloseBtn = document.getElementById('discount-close-btn');
+    const discountCloseX = document.getElementById('discount-close');
+    const applyDiscountBtn = document.getElementById('apply-discount-btn');
+    function applyDiscountAndGo() {
+      localStorage.setItem('respira_discount_percent', '30');
+      localStorage.setItem('respira_discount_label', 'Cupom 30% OFF');
+
+      closeDiscountModal();
+      window.location.href = 'checkout.html';
+    }
+
+    if (localStorage.getItem('respira_discount_percent') == '30') {
+        productPriceEl.textContent = `R$ ${discountedPriceValue} / mês`;
+    }
+    
+    applyDiscountBtn?.addEventListener('click', applyDiscountAndGo);
+    if (discountCloseBtn) discountCloseBtn.addEventListener('click', closeDiscountModal);
+    if (discountCloseX) discountCloseX.addEventListener('click', closeDiscountModal);
+    if (discountOverlay) discountOverlay.addEventListener('click', closeDiscountModal);
 
     /* === PARALLAX ORBS === */
     document.addEventListener('mousemove', e => {
       const orbs = document.querySelectorAll('.orb');
+      if (!orbs.length) return;
       const x = (e.clientX / innerWidth - 0.5) * 2;
       const y = (e.clientY / innerHeight - 0.5) * 2;
       orbs.forEach((orb, i) => {
         const f = (i + 1) * 12;
-        orb.style.transform = `translate(${x*f}px,${y*f}px)`;
+        orb.style.transform = `translate(${x * f}px,${y * f}px)`;
       });
     });
+
   </script>
 </body>
 </html>

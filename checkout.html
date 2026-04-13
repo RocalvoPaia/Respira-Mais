@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Checkout - Respira Mais</title>
+  <meta name="description" content="Checkout do Respira Mais com frascos dos níveis 1, 2 e 3.">
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
       --sage: #8aad99;
@@ -19,230 +20,823 @@
       --ink: #1e2820;
       --gold: #c9a96e;
       --cream: #fdfaf5;
+      --danger: #c25b5b;
       --font-display: 'Cormorant Garamond', Georgia, serif;
       --font-body: 'DM Sans', sans-serif;
+      --shadow: 0 18px 60px rgba(0,0,0,.08);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: var(--font-body);
-      background: var(--cream);
+      background: linear-gradient(180deg, #fbfaf7 0%, #f4f0ea 100%);
       color: var(--ink);
       line-height: 1.6;
     }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-    .header {
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+
+    .topbar {
       background: var(--ink);
       color: var(--cream);
-      padding: 2rem 0;
-      text-align: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
-    .header h1 { font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .products { padding: 4rem 0; }
-    .products h2 { font-family: var(--font-display); font-size: 2rem; text-align: center; margin-bottom: 2rem; }
-    .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: .02em;
+    }
+    .brand span { color: var(--sage); }
+    .topbar small { color: rgba(255,255,255,.7); }
+
+    .hero {
+      padding: 2rem 0 1rem;
+    }
+    .hero-card {
+      background: linear-gradient(135deg, rgba(138,173,153,.12), rgba(184,212,232,.18));
+      border: 1px solid rgba(94,143,168,.12);
+      border-radius: 28px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      font-weight: 400;
+      line-height: 1.05;
+      margin-bottom: .8rem;
+    }
+    .hero p {
+      color: var(--stone);
+      max-width: 56ch;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+      margin-top: 1.4rem;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .55rem .9rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(0,0,0,.05);
+      font-size: .85rem;
+      color: var(--stone);
+    }
+    .hero-art {
+      justify-self: end;
+      width: min(340px, 100%);
+      border-radius: 24px;
+      background: rgba(255,255,255,.55);
+      padding: 1rem;
+      border: 1px solid rgba(0,0,0,.05);
+    }
+    .hero-art img { width: 100%; height: auto; }
+
+    .section {
+      padding: 2.5rem 0;
+    }
+    .section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 1.6rem;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--stone);
+      max-width: 62ch;
+      margin: 0 auto 2rem;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      align-items: stretch;
+    }
     .product-card {
       background: #fff;
+      border-radius: 24px;
+      padding: 1.1rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,.04);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .product-media {
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(138,173,153,.14), rgba(184,212,232,.22));
+      padding: .9rem;
+      min-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .product-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .product-badge {
+      display: inline-flex;
+      width: fit-content;
+      padding: .35rem .75rem;
+      border-radius: 999px;
+      font-size: .74rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 600;
+      background: var(--linen);
+      color: var(--stone);
+    }
+    .product-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 400;
+      line-height: 1.1;
+    }
+    .product-card p {
+      color: var(--stone);
+      font-size: .94rem;
+    }
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .product-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .feature {
+      padding: .35rem .7rem;
+      border-radius: 999px;
+      background: #f5f7f6;
+      color: var(--stone);
+      font-size: .78rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .9rem 1.2rem;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--sage); color: #fff; }
+    .btn-primary:hover { background: var(--stone); box-shadow: 0 10px 28px rgba(61,74,66,.18); }
+    .btn-outline { background: transparent; border: 1.5px solid rgba(30,40,32,.15); color: var(--ink); }
+    .btn-outline:hover { background: var(--linen); }
+    .btn-danger { background: #f8e8e8; color: var(--danger); }
+    .btn-danger:hover { background: #f5dede; }
+    .btn-ghost { background: #f5f7f6; color: var(--stone); }
+
+    .cart {
+      background: rgba(255,255,255,.55);
+      border-top: 1px solid rgba(0,0,0,.04);
+      border-bottom: 1px solid rgba(0,0,0,.04);
+    }
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .panel {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 1.3rem;
+      border: 1px solid rgba(0,0,0,.04);
+    }
+    .panel h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+    }
+    .cart-empty {
+      color: var(--stone);
+      opacity: .75;
+      padding: 1rem 0 .5rem;
+    }
+    .cart-item {
+      display: grid;
+      grid-template-columns: 74px 1fr auto;
+      gap: .9rem;
+      align-items: center;
+      padding: .9rem;
+      border-radius: 18px;
+      background: #fbfbfb;
+      border: 1px solid rgba(0,0,0,.04);
+    }
+    .cart-item-thumb {
+      width: 74px;
+      height: 74px;
       border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,.1);
+      object-fit: cover;
+      background: linear-gradient(135deg, rgba(138,173,153,.18), rgba(184,212,232,.22));
+    }
+    .cart-item-title {
+      font-weight: 700;
+      margin-bottom: .2rem;
+    }
+    .cart-item-meta {
+      color: var(--stone);
+      font-size: .88rem;
+    }
+    .cart-item-actions {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+    .qty {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.08);
+      background: #fff;
+    }
+    .qty button {
+      width: 34px;
+      height: 34px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .qty span {
+      min-width: 28px;
+      text-align: center;
+      font-weight: 700;
+      font-size: .9rem;
+    }
+    .cart-summary {
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--stone);
+    }
+    .summary-row strong {
+      color: var(--ink);
+    }
+    .total {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--ink);
+      padding-top: .6rem;
+      border-top: 1px solid rgba(0,0,0,.06);
+    }
+    .checkout-cta {
+      margin-top: .8rem;
+    }
+    .checkout-note {
+      font-size: .85rem;
+      color: var(--stone);
+      margin-top: .7rem;
+    }
+
+    .checkout-wrap {
+      padding: 2.5rem 0 4rem;
+    }
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr .85fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .checkout-form {
+      display: grid;
+      gap: 1rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: .88rem;
+      font-weight: 600;
+      margin-bottom: .45rem;
+      color: var(--stone);
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: .9rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.1);
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--sage);
+      box-shadow: 0 0 0 4px rgba(138,173,153,.16);
+    }
+    .payment-box {
+      display: grid;
+      gap: .9rem;
+    }
+    .payment-box .mini-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .9rem 1rem;
+      border-radius: 16px;
+      background: var(--linen);
+      color: var(--stone);
+      font-size: .92rem;
+    }
+
+    .success {
+      display: none;
+      padding: 4rem 0;
       text-align: center;
     }
-    .product-card h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; }
-    .product-card p { margin-bottom: 1.5rem; color: var(--stone); }
-    .product-price { font-size: 1.5rem; font-weight: 600; color: var(--gold); margin-bottom: 1rem; }
-    .btn {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s;
+    .success-card {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 28px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
     }
-    .btn-primary { background: var(--sage); color: #fff; }
-    .btn-primary:hover { background: var(--stone); }
-    .cart { padding: 4rem 0; background: var(--linen); }
-    .cart h2 { font-family: var(--font-display); font-size: 2rem; text-align: center; margin-bottom: 2rem; }
-    .cart-items { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,.1); max-width: 600px; margin: 0 auto; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; }
-    .cart-item:last-child { border-bottom: none; }
-    .cart-total { font-size: 1.25rem; font-weight: 600; text-align: center; margin-top: 1rem; }
-    .checkout { padding: 4rem 0; }
-    .checkout h2 { font-family: var(--font-display); font-size: 2rem; text-align: center; margin-bottom: 2rem; }
-    .checkout-form { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 8px 32px rgba(0,0,0,.1); }
-    .form-group { margin-bottom: 1.5rem; }
-    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-    .form-group input, .form-group select { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
-    .form-row { display: flex; gap: 1rem; }
-    .form-row .form-group { flex: 1; }
-    .success { display: none; text-align: center; padding: 4rem 0; }
-    .success h2 { color: var(--sage); }
-    .back-btn { display: inline-block; margin-top: 2rem; padding: 0.75rem 1.5rem; background: var(--stone); color: #fff; text-decoration: none; border-radius: 8px; }
+    .success h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 400;
+      color: var(--sage);
+      margin-bottom: .8rem;
+    }
+    .success p {
+      color: var(--stone);
+      margin-bottom: 1.4rem;
+    }
+    .back-btn {
+      display: inline-flex;
+      margin-top: .5rem;
+      padding: .9rem 1.2rem;
+      border-radius: 14px;
+      background: var(--stone);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .products-grid,
+      .cart-layout,
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+      .hero-art { justify-self: start; }
+    }
+    @media (max-width: 640px) {
+      .form-row { grid-template-columns: 1fr; }
+      .cart-item { grid-template-columns: 64px 1fr; }
+      .cart-item-actions { grid-column: 1 / -1; justify-content: space-between; }
+    }
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="container">
-      <h1>Checkout - Respira Mais</h1>
-      <p>Escolha seus produtos e finalize sua compra</p>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="index.html" class="brand">Respira<span>Mais</span></a>
+      <small>Checkout seguro · protegido por SSL</small>
     </div>
   </header>
 
-  <section class="products">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-card">
+        <div class="hero-grid">
+          <div>
+            <h1>Escolha seu frasco e finalize a compra</h1>
+            <p>A sua qualidade de vida pode melhorar com uma simples capsula. Aproveite a oferta de primeira compra e obtenha o seu frasco hoje com frete grátis!</p>
+            <div class="hero-badges">
+              <span class="chip">🌿 Fórmula natural</span>
+              <span class="chip">🚚 Frete grátis</span>
+              <span class="chip">🛡️ Garantia de 30 dias</span>
+            </div>
+          </div>
+          <div class="hero-art">
+            <img src="assets/produtos/frasco-hero.svg" alt="Placeholder do frasco Respira Mais">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section products">
     <div class="container">
       <h2>Escolha seu Produto</h2>
-      <div class="product-grid">
-        <div class="product-card">
-          <h3>Frasco Nível 1</h3>
-          <p>Para estresse leve. Reduz tensão e melhora foco.</p>
-          <div class="product-price">R$ 89,90</div>
-          <button class="btn btn-primary" onclick="addToCart('Frasco Nível 1', 89.90)">Adicionar ao Carrinho</button>
-        </div>
-        <div class="product-card">
-          <h3>Frasco Nível 3</h3>
-          <p>Para estresse intenso. Reconstrução profunda.</p>
-          <div class="product-price">R$ 149,90</div>
-          <button class="btn btn-primary" onclick="addToCart('Frasco Nível 3', 149.90)">Adicionar ao Carrinho</button>
-        </div>
+      <p class="section-subtitle">Os três frascos estão disponíveis aqui. Escolha o que melhor se adapta às suas necessidades.</p>
+
+      <div class="products-grid">
+        <article class="product-card">
+          <div class="product-media">
+            <img src="assets/produtos/nivel-1.svg" alt="Frasco nível 1 - placeholder">
+          </div>
+          <span class="product-badge">Nível 1</span>
+          <h3>Frasco Leve</h3>
+          <p>Para estresse leve. Apoio para rotina, foco e equilíbrio diário.</p>
+          <div class="product-features">
+            <span class="feature">1 frasco</span>
+            <span class="feature">Uso diário</span>
+            <span class="feature">Mais leve</span>
+          </div>
+         <div class="product-price" data-price="level1"></div>
+          <button class="btn btn-primary" data-product="level1">Adicionar ao carrinho</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-media">
+            <img src="assets/produtos/nivel-2.svg" alt="Frasco nível 2 - placeholder">
+          </div>
+          <span class="product-badge">Nível 2</span>
+          <h3>Frasco Moderado</h3>
+          <p>Para estresse moderado. Ideal para quem já sente os sinais com mais frequência.</p>
+          <div class="product-features">
+            <span class="feature">1 frasco</span>
+            <span class="feature">Equilíbrio</span>
+            <span class="feature">Mais suporte</span>
+          </div>
+         <div class="product-price" data-price="level2"></div>
+          <button class="btn btn-primary" data-product="level2">Adicionar ao carrinho</button>
+        </article>
+
+        <article class="product-card">
+          <div class="product-media">
+            <img src="assets/produtos/nivel-3.svg" alt="Frasco nível 3 - placeholder">
+          </div>
+          <span class="product-badge">Nível 3</span>
+          <h3>Frasco Intenso</h3>
+          <p>Para estresse intenso. Protocolo mais forte para momentos de maior sobrecarga.</p>
+          <div class="product-features">
+            <span class="feature">1 frasco</span>
+            <span class="feature">Protocolo forte</span>
+            <span class="feature">Apoio extra</span>
+          </div>
+          <div class="product-price" data-price="level3"></div>
+          <button class="btn btn-primary" data-product="level3">Adicionar ao carrinho</button>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="cart">
-    <div class="container">
-      <h2>Seu Carrinho</h2>
-      <div class="cart-items" id="cart-items">
-        <p id="empty-cart">Carrinho vazio</p>
+  <section class="section cart">
+    <div class="container cart-layout">
+      <div class="panel">
+        <h3>Seu Carrinho</h3>
+        <div class="cart-items" id="cart-items">
+          <p class="cart-empty" id="empty-cart">Carrinho vazio</p>
+        </div>
       </div>
-      <div class="cart-total" id="cart-total">Total: R$ 0,00</div>
-      <div style="text-align: center; margin-top: 2rem;">
-        <button class="btn btn-primary" onclick="proceedToCheckout()">Ir para Checkout</button>
+
+      <div class="panel cart-summary">
+        <h3>Resumo</h3>
+        <div class="summary-row"><span>Itens</span><strong id="summary-items">0</strong></div>
+        <div class="summary-row"><span>Subtotal</span><strong id="summary-subtotal">R$ 0,00</strong></div>
+        <div class="summary-row"><span>Frete</span><strong>Grátis</strong></div>
+        <div class="summary-row total"><span>Total</span><strong id="cart-total">R$ 0,00</strong></div>
+        <button class="btn btn-primary checkout-cta" id="open-checkout">Ir para Checkout</button>
+        <p class="checkout-note">Compra 100% segura.</p>
       </div>
     </div>
   </section>
 
-  <section class="checkout" id="checkout-section" style="display: none;">
-    <div class="container">
-      <h2>Finalizar Compra</h2>
-      <form class="checkout-form" id="checkout-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="first-name">Nome</label>
-            <input type="text" id="first-name" required>
+  <section class="section checkout-wrap hidden" id="checkout-section">
+    <div class="container checkout-layout">
+      <div class="panel">
+        <h3>Finalizar Compra</h3>
+        <form class="checkout-form" id="checkout-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first-name">Nome</label>
+              <input type="text" id="first-name" required>
+            </div>
+            <div class="form-group">
+              <label for="last-name">Sobrenome</label>
+              <input type="text" id="last-name" required>
+            </div>
           </div>
+
           <div class="form-group">
-            <label for="last-name">Sobrenome</label>
-            <input type="text" id="last-name" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" required>
-        </div>
-        <div class="form-group">
-          <label for="address">Endereço</label>
-          <input type="text" id="address" required>
-        </div>
-        <div class="form-row">
+
           <div class="form-group">
-            <label for="city">Cidade</label>
-            <input type="text" id="city" required>
+            <label for="address">Endereço</label>
+            <input type="text" id="address" required>
           </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">Cidade</label>
+              <input type="text" id="city" required>
+            </div>
+            <div class="form-group">
+              <label for="zip">CEP</label>
+              <input type="text" id="zip" required>
+            </div>
+          </div>
+
           <div class="form-group">
-            <label for="zip">CEP</label>
-            <input type="text" id="zip" required>
+            <label for="payment-method">Método de pagamento</label>
+            <select id="payment-method" required>
+              <option value="card">Cartão de crédito</option>
+              <option value="pix">Pix</option>
+              <option value="boleto">Boleto</option>
+            </select>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="card-number">Número do Cartão</label>
-          <input type="text" id="card-number" placeholder="1234 5678 9012 3456" required>
-        </div>
-        <div class="form-row">
+
+          <div class="payment-box">
+            <div class="mini-card">Pagamento protegido <span>🔒</span></div>
+            <div class="mini-card">Confirmação imediata <span>⚡</span></div>
+          </div>
+
           <div class="form-group">
-            <label for="expiry">Validade</label>
-            <input type="text" id="expiry" placeholder="MM/AA" required>
+            <label for="card-number">Número do Cartão</label>
+            <input type="text" id="card-number" placeholder="1234 5678 9012 3456" inputmode="numeric" required>
           </div>
-          <div class="form-group">
-            <label for="cvv">CVV</label>
-            <input type="text" id="cvv" required>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="expiry">Validade</label>
+              <input type="text" id="expiry" placeholder="MM/AA" required>
+            </div>
+            <div class="form-group">
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" inputmode="numeric" required>
+            </div>
           </div>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Finalizar Pedido</button>
-      </form>
+
+          <button type="submit" class="btn btn-primary">Finalizar Pedido</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h3>Produtos no pedido</h3>
+        <div id="order-summary"></div>
+      </div>
     </div>
   </section>
 
   <section class="success" id="success-section">
     <div class="container">
-      <h2>Compra Realizada com Sucesso!</h2>
-      <p>Obrigado por escolher Respira Mais. Seu pedido foi processado.</p>
-      <a href="index.html" class="back-btn">Voltar ao Início</a>
+      <div class="success-card">
+        <h2>Compra Realizada com Sucesso!</h2>
+        <p>Obrigado por escolher Respira Mais. Seu pedido foi processado.</p>
+        <a href="index.html" class="back-btn">Voltar ao Início</a>
+      </div>
     </div>
   </section>
 
   <script>
-    let cart = [];
-    let total = 0;
 
-    function addToCart(product, price) {
-      const existing = cart.find(item => item.product === product);
+    const discountPercent = Number(localStorage.getItem('respira_discount_percent') || '0');
+    const discountMultiplier = 1 - (discountPercent / 100);
+
+    const products = {
+      level1: {
+        name: 'Frasco Nível 1',
+        price: 89.90 * discountMultiplier,
+        image: 'assets/produtos/nivel-1.svg',
+        description: 'Para estresse leve.'
+      },
+      level2: {
+        name: 'Frasco Nível 2',
+        price: 119.90 * discountMultiplier,
+        image: 'assets/produtos/nivel-2.svg',
+        description: 'Para estresse moderado.'
+      },
+      level3: {
+        name: 'Frasco Nível 3',
+        price: 149.90 * discountMultiplier,
+        image: 'assets/produtos/nivel-3.svg',
+        description: 'Para estresse intenso.'
+      }
+    };
+
+    const cart = [];
+    const cartItemsEl = document.getElementById('cart-items');
+    const emptyCartEl = document.getElementById('empty-cart');
+    const cartTotalEl = document.getElementById('cart-total');
+    const summaryItemsEl = document.getElementById('summary-items');
+    const summarySubtotalEl = document.getElementById('summary-subtotal');
+    const checkoutSection = document.getElementById('checkout-section');
+    const orderSummary = document.getElementById('order-summary');
+
+    function formatBRL(value) {
+      return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function updateProductPrices() {
+      document.querySelectorAll('[data-price]').forEach(el => {
+        const key = el.dataset.price;
+        const product = products[key];
+
+        const originalPrices = {
+          level1: 89.90,
+          level2: 119.90,
+          level3: 149.90
+        };
+
+        const original = originalPrices[key];
+
+        if (discountPercent > 0) {
+          el.innerHTML = `
+            <span style="text-decoration: line-through; opacity: .6; font-size: .9rem;">
+              ${formatBRL(original)}
+            </span><br>
+            <strong>${formatBRL(product.price)}</strong>
+          `;
+        } else {
+          el.textContent = formatBRL(product.price);
+        }
+      });
+    }
+
+    updateProductPrices();
+
+    function addToCart(productKey) {
+      const product = products[productKey];
+      if (!product) return;
+
+      const existing = cart.find(item => item.key === productKey);
       if (existing) {
-        existing.quantity++;
+        existing.quantity += 1;
       } else {
-        cart.push({ product, price, quantity: 1 });
+        cart.push({ key: productKey, quantity: 1 });
+      }
+      updateCart();
+    }
+
+    function changeQuantity(productKey, delta) {
+      const item = cart.find(entry => entry.key === productKey);
+      if (!item) return;
+
+      item.quantity += delta;
+      if (item.quantity <= 0) {
+        const index = cart.findIndex(entry => entry.key === productKey);
+        if (index >= 0) cart.splice(index, 1);
+      }
+      updateCart();
+    }
+
+    function removeFromCart(productKey) {
+      const index = cart.findIndex(entry => entry.key === productKey);
+      if (index >= 0) {
+        cart.splice(index, 1);
       }
       updateCart();
     }
 
     function updateCart() {
-      const cartItems = document.getElementById('cart-items');
-      const emptyCart = document.getElementById('empty-cart');
-      const cartTotal = document.getElementById('cart-total');
-      cartItems.innerHTML = '';
-      total = 0;
+      if (!cartItemsEl || !cartTotalEl || !summaryItemsEl || !summarySubtotalEl) return;
+
+      cartItemsEl.innerHTML = '';
+      let total = 0;
+      let totalItems = 0;
 
       if (cart.length === 0) {
-        cartItems.appendChild(emptyCart);
-        emptyCart.style.display = 'block';
+        cartItemsEl.innerHTML = '<p class="cart-empty" id="empty-cart">Carrinho vazio</p>';
       } else {
-        emptyCart.style.display = 'none';
-        cart.forEach((item, index) => {
+        cart.forEach(item => {
+          const product = products[item.key];
+          const itemTotal = product.price * item.quantity;
+          total += itemTotal;
+          totalItems += item.quantity;
+
           const itemDiv = document.createElement('div');
           itemDiv.className = 'cart-item';
           itemDiv.innerHTML = `
-            <span>${item.product} (x${item.quantity})</span>
-            <span>R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</span>
-            <button onclick="removeFromCart(${index})">Remover</button>
+            <img class="cart-item-thumb" src="${product.image}" alt="${product.name}">
+            <div>
+              <div class="cart-item-title">${product.name}</div>
+              <div class="cart-item-meta">${product.description}</div>
+              <div class="cart-item-meta">${formatBRL(product.price)} cada</div>
+            </div>
+            <div class="cart-item-actions">
+              <div class="qty" aria-label="Quantidade">
+                <button type="button" aria-label="Diminuir" data-action="minus">−</button>
+                <span>${item.quantity}</span>
+                <button type="button" aria-label="Aumentar" data-action="plus">+</button>
+              </div>
+              <button type="button" class="btn btn-danger" data-action="remove">Remover</button>
+            </div>
           `;
-          cartItems.appendChild(itemDiv);
-          total += item.price * item.quantity;
+
+          itemDiv.querySelector('[data-action="minus"]').addEventListener('click', () => changeQuantity(item.key, -1));
+          itemDiv.querySelector('[data-action="plus"]').addEventListener('click', () => changeQuantity(item.key, 1));
+          itemDiv.querySelector('[data-action="remove"]').addEventListener('click', () => removeFromCart(item.key));
+
+          cartItemsEl.appendChild(itemDiv);
         });
       }
-      cartTotal.textContent = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+
+      cartTotalEl.textContent = formatBRL(total);
+      summarySubtotalEl.textContent = formatBRL(total);
+      summaryItemsEl.textContent = String(totalItems);
+
+      renderOrderSummary();
     }
 
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCart();
+    function renderOrderSummary() {
+      if (!orderSummary) return;
+
+      if (cart.length === 0) {
+        orderSummary.innerHTML = '<p class="cart-empty">Nenhum produto adicionado ainda.</p>';
+        return;
+      }
+
+      orderSummary.innerHTML = cart.map(item => {
+        const product = products[item.key];
+        return `
+          <div class="cart-item" style="grid-template-columns: 64px 1fr; margin-bottom: .8rem;">
+            <img class="cart-item-thumb" src="${product.image}" alt="${product.name}">
+            <div>
+              <div class="cart-item-title">${product.name} × ${item.quantity}</div>
+              <div class="cart-item-meta">${formatBRL(product.price)} cada</div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    function proceedToCheckout() {
+    document.querySelectorAll('[data-product]').forEach(button => {
+      button.addEventListener('click', () => addToCart(button.dataset.product));
+    });
+
+    document.getElementById('open-checkout').addEventListener('click', () => {
       if (cart.length === 0) {
         alert('Adicione produtos ao carrinho primeiro.');
         return;
       }
-      document.querySelector('.cart').style.display = 'none';
-      document.querySelector('.products').style.display = 'none';
-      document.getElementById('checkout-section').style.display = 'block';
-    }
+      checkoutSection.classList.remove('hidden');
+      checkoutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 
     document.getElementById('checkout-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      // Simulação de processamento
-      document.getElementById('checkout-section').style.display = 'none';
+      document.querySelector('.cart').style.display = 'none';
+      document.querySelector('.products').style.display = 'none';
+      checkoutSection.style.display = 'none';
       document.getElementById('success-section').style.display = 'block';
     });
+
+    updateCart();
   </script>
 </body>
 </html>
